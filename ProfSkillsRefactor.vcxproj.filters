@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ProfSkillsRefactor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="headers">
+      <UniqueIdentifier>{912d9849-6c48-4e53-aa48-d3b311070c4b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Points.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Coords.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PacDude.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostDude.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Tiles.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="enumeratedTypes.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardListeners.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalScopeVars.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUpBase.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp2.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp3.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
