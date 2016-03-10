@@ -35,7 +35,10 @@ void main()
 	myEngine->StartWindowed();
 
 	// Add default folder for meshes and other media
-	myEngine->AddMediaFolder( ".\\Media" );
+	// Add default folder for meshes and other media
+	myEngine->AddMediaFolder( ".\\png Files" );
+	myEngine->AddMediaFolder( ".\\tga Files" );
+	myEngine->AddMediaFolder( ".\\X Files"   );
 	/**** Set up your scene here ****/
 	ICamera* myCamera = myEngine->CreateCamera(kManual);
 	//camera1
