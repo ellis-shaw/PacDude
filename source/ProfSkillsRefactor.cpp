@@ -13,6 +13,7 @@
 #include "PowerUp3.h"
 #include "GlobalScopeVars.h"
 #include "KeyboardListeners.h"
+
 using namespace tle;
 
 const int gNumPoints = 10000;
