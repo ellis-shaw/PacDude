@@ -62,7 +62,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\ProgramData\TL-Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\ProgramData\TL-Engine\include;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <PrecompiledHeader>
@@ -95,7 +95,7 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\ProgramData\TL-Engine\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\ProgramData\TL-Engine\include;$(SolutionDir)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -124,25 +124,25 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ProfSkillsRefactor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Coords.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="enumeratedTypes.h" />
-    <ClInclude Include="GhostDude.h" />
-    <ClInclude Include="GlobalScopeVars.h" />
-    <ClInclude Include="KeyboardListeners.h" />
-    <ClInclude Include="PacDude.h" />
-    <ClInclude Include="Points.h" />
-    <ClInclude Include="PowerUp.h" />
-    <ClInclude Include="PowerUp2.h" />
-    <ClInclude Include="PowerUp3.h" />
-    <ClInclude Include="PowerUpBase.h" />
-    <ClInclude Include="Tiles.h" />
+    <ClCompile Include="source\ProfSkillsRefactor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Coords.h" />
+    <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\enumeratedTypes.h" />
+    <ClInclude Include="include\GhostDude.h" />
+    <ClInclude Include="include\GlobalScopeVars.h" />
+    <ClInclude Include="include\KeyboardListeners.h" />
+    <ClInclude Include="include\PacDude.h" />
+    <ClInclude Include="include\Points.h" />
+    <ClInclude Include="include\PowerUp.h" />
+    <ClInclude Include="include\PowerUp2.h" />
+    <ClInclude Include="include\PowerUp3.h" />
+    <ClInclude Include="include\PowerUpBase.h" />
+    <ClInclude Include="include\Tiles.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

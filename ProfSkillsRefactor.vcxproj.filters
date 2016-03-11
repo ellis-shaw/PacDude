@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="ProfSkillsRefactor.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -12,43 +9,46 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Points.h">
+    <ClCompile Include="source\ProfSkillsRefactor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Coords.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="Coords.h">
+    <ClInclude Include="include\Entity.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="PacDude.h">
+    <ClInclude Include="include\enumeratedTypes.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="include\GhostDude.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="GhostDude.h">
+    <ClInclude Include="include\GlobalScopeVars.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="Tiles.h">
+    <ClInclude Include="include\KeyboardListeners.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="enumeratedTypes.h">
+    <ClInclude Include="include\PacDude.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="KeyboardListeners.h">
+    <ClInclude Include="include\Points.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUp.h">
+    <ClInclude Include="include\PowerUp.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="GlobalScopeVars.h">
+    <ClInclude Include="include\PowerUp2.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUpBase.h">
+    <ClInclude Include="include\PowerUp3.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUp2.h">
+    <ClInclude Include="include\PowerUpBase.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="PowerUp3.h">
+    <ClInclude Include="include\Tiles.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
