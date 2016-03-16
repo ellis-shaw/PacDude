@@ -4,7 +4,6 @@
 #include <math.h>
 #include "SFML/Audio.hpp"
 
-
 #ifdef  _MINI_GAME
 
 sf::SoundBuffer bufferMini;
