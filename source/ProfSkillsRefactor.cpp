@@ -19,6 +19,7 @@
 
 #include "MenuSelection.h"
 #include "AudioEffects.h"
+#include <iostream>
 
 using namespace std;
 using namespace tle;
@@ -295,10 +296,22 @@ void GameUpdate(float updateTime)
 // Shutdown the game, remove everything created in the setup function
 void GameShutdown()
 {
+	// resetting count data
+	activePointCount = 0;
+	activePowerUpCount = 0;
+
+	// deleting meshs, etc
 	myEngine->RemoveFont(myFont);
 	myEngine->RemoveCamera(myCamera);
 	myEngine->RemoveMesh(tileMESH);
 	myEngine->RemoveMesh(cubeMESH);
+
+	// deleting all stack allocated objects
+	for (int i = 0; i < activePowerUpCount; ++i)
+		delete PowerUps[i];
+
+	for (int i = 0; i < activePointCount; ++i)
+		delete Points[i];
 
 	delete Player;
 	delete AI;
