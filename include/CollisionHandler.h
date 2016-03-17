@@ -21,12 +21,5 @@ bool CCollisionHandler::S2SPlayerAI(CPacDude* player, CGhostDude* AI)
 
 	float collisionDistance = sqrt(x*x + z*z);
 
-	if (collisionDistance < Radius)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return (collisionDistance < Radius);	
 }
