@@ -458,10 +458,10 @@ void GameUpdate(float updateTime)
 							 //-------------------both of the following loops are inneficient because we are checking everything every frame
 
 							 //loop the number of active points, and run player to point collision //------------------------by making a class that contains a vector of points could help 
-	for (int i = 0; i < activePointCount; i++)
-	{
-		Points[i]->PlayerCollisionDetection(Player);
-	}
+	//for (int i = 0; i < activePointCount; i++)
+	//{
+	//	Points[i]->PlayerCollisionDetection(Player);
+	//}
 
 	//loop the number of powerups, and run the player collision //------------------------
 	for (int i = 0; i < activePowerUpCount; i++)
@@ -474,7 +474,12 @@ void GameUpdate(float updateTime)
 	}
 
 	if (cHandler->S2SPlayerAI(Player, AI));
-	// handle collision
+
+	for (int i = 0; i < activePowerUpCount; i++)
+		if (cHandler->S2SPlayerPoints(Player, &Points[i]))
+			cout << "hitPoint\n";
+
+		// handle collision
 
 	//timer to deactivate powerup
 	if (PowerUp_ACTIVE)
