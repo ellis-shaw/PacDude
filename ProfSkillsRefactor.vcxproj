@@ -133,6 +133,7 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AudioEffects.h" />
+    <ClInclude Include="include\CollisionHandler.h" />
     <ClInclude Include="include\Coords.h" />
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\enumeratedTypes.h" />

@@ -1,6 +1,7 @@
 #ifndef _POINTS
 #define _POINTS
 
+#include <iostream>
 #include <TL-Engine.h>
 #include "Entity.h"
 #include "Coords.h"
@@ -45,7 +46,7 @@ bool CPoints::PlayerCollisionDetection(CPacDude* Player)
 	float collisionDist = sqrt(x*x + z*z);
 
 	if (collisionDist < playerRadius + dotRadius)
-	{
+	{		
 		//collision occoured
 		mModel->SetSkin("black.png");
 		return true;

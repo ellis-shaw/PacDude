@@ -19,6 +19,8 @@
 
 #include "MenuSelection.h"
 #include "AudioEffects.h"
+#include "CollisionHandler.h"
+
 #include <iostream>
 
 using namespace std;
@@ -27,6 +29,9 @@ using namespace tle;
 // Variables
 I3DEngine* myEngine;
 HWND hWnd;
+
+// collision handler
+CCollisionHandler* cHandler;
 
 IFont* loadingFont;
 IFont* frontEndFont;
@@ -74,250 +79,14 @@ void ReadGrid(ifstream &mapFile, CTile tiles[gGridWidth][gGridWidth]);
 void InitialiseTiles_XandZ(CTile tiles[gGridWidth][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH);
 void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH);
 
-/////////////////////////////
-// Program setup/shutdown
-
-// One off setup for the entire program. Returns true on success, false on failure
-bool ProgramSetup()
-{
-	// Create a 3D engine (Irrlicht in this case) and open a window for it
-	myEngine = New3DEngine(kTLX);
-	if (!myEngine)
-	{
-		return false;
-	}
-	myEngine->StartWindowed(1280, 720);
-	hWnd = (HWND)myEngine->GetWindow(); // Window handle
-
-	// Add folders for meshes and other media (for different locations)	
-	myEngine->AddMediaFolder(".\\jpg Files");
-	myEngine->AddMediaFolder(".\\png Files");
-	myEngine->AddMediaFolder(".\\tga Files");
-	myEngine->AddMediaFolder(".\\X Files");
-
-	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
-	loadingFont = myEngine->LoadFont("Font2.bmp");
-	if (!loadingFont)
-	{
-		myEngine->Delete();
-		return false;
-	}
-
-	return true;
-}
-
-// Final shutdown for the entire program
-void ProgramShutdown()
-{
-	myEngine->Delete();
-}
-
-// Set up the front-end (load meshes & fonts and create models, cameras, lights etc)
-// Returns true on success, false on failure
-bool FrontEndSetup()
-{
-	frontEndFont = myEngine->LoadFont("Font1.bmp");
-	backgroundMesh = myEngine->LoadMesh("Skybox.x");
-
-	// Load resources, returning on failure
-	if (!frontEndFont || !backgroundMesh) // change to object
-	{
-		// Should really release those that were successfully loaded
-		return false;
-	}
-
-	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
-
-	// Initialise timer (used for variable timing in front-end and game loops)
-	myEngine->Timer();
-
-	cameraMenu = myEngine->CreateCamera(kManual, 0.0f, 70.0f, 0.0f);
-	cameraMenu->RotateX(-55.0f);
-
-	LoadMiniSound();
-
-	LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
-
-	PlaySoundTrackMenu();
-
-	return true;
-}
-
-void FrontEndUpdate(float updateTime)
-{
-	// Text (with shadows)
-	//i.e frontEndFont->Draw("Generic Space Game II", 640, 120, kWhite, kCentre);
-
-
-	frontEndFont->Draw("Play", 200, 118, kGrey, kCentre);
-	frontEndFont->Draw("Play", 200, 122, kGrey, kCentre);
-	frontEndFont->Draw("Play", 202, 118, kGrey, kCentre);
-	frontEndFont->Draw("Play", 202, 122, kGrey, kCentre);
-	frontEndFont->Draw("Play", 200, 120, kWhite, kCentre);
-
-	frontEndFont->Draw("Quit", 200, 218, kGrey, kCentre);
-	frontEndFont->Draw("Quit", 200, 222, kGrey, kCentre);
-	frontEndFont->Draw("Quit", 204, 218, kGrey, kCentre);
-	frontEndFont->Draw("Quit", 204, 222, kGrey, kCentre);
-	frontEndFont->Draw("Quit", 202, 220, kWhite, kCentre);
-
-	if (myEngine->KeyHit(Key_Up))
-	{
-		MoveSelectionUp();
-	}
-
-	if (myEngine->KeyHit(Key_Down))
-	{
-		MoveSelectionDown();
-	}
-
-	// High lights selected option in menu
-	if (GetCurrentSelection() == 0)
-	{
-		frontEndFont->Draw("Play", 200, 120, kRed, kCentre);
-	}
-	else
-	{
-		frontEndFont->Draw("Quit", 202, 220, kRed, kCentre);
-	}
-
-#ifdef _MINI_GAME
-	if (myEngine->KeyHit(Key_Space))
-		PlayMiniSound();
-
-	if (myEngine->KeyHit(Key_Plus))
-		IncrementPitch();
-
-	if (myEngine->KeyHit(Key_Minus))
-		DecrementPitch();
-#endif
-}
-
-// Shutdown the front-end, remove everything created in the setup function
-void FrontEndShutdown()
-{
-	StopSoundTrackMenu();
-	myEngine->RemoveFont(frontEndFont);
-	myEngine->RemoveCamera(cameraMenu);
-	myEngine->RemoveMesh(backgroundMesh);
-}
-
-bool GameSetup()
-{
-	// Initialise timer (used for variable timing in front-end and game loops)
-	myEngine->Timer();
-
-	myCamera = myEngine->CreateCamera(kManual);
-	myCamera->SetPosition(10.0f, 25.0f, 4.0f);
-	myCamera->RotateX(90);
-
-	myFont = myEngine->LoadFont("font1.bmp");
-	tileMESH = myEngine->LoadMesh("Square.x");
-	cubeMESH = myEngine->LoadMesh("state.x");
-
-	Player = new CPacDude(cubeMESH);	// delete
-	AI = new CGhostDude(cubeMESH, 0);	// delete
-
-	myCamera->AttachToParent(Player->mModel);
-
-	InitialiseTiles_XandZ(tiles, tileMESH, cubeMESH);
-
-	CoordinateFile.open("eMap.txt");
-
-	ReadGrid(CoordinateFile, tiles);
-
-	CoordinateFile.close();
-
-	InitialiseTiles_TerrainAndTexture(tiles, Points, activePointCount, PowerUps, activePowerUpCount, cubeMESH);
-
-	return true;
-}
-
-// Update the game, move models & cameras, draw text etc. Pass a float to specify the
-// time passed since the last update (frame) - allows us to use the variable timing method
-void GameUpdate(float updateTime)
-{
-	//save the player's last position
-	Player->PreviousPos.x = round(Player->mModel->GetX());
-	Player->PreviousPos.z = round(Player->mModel->GetZ());
-
-	string output;
-	myFont->Draw("Speed: ", 10, 10);
-	output = to_string(Player->mSpeed);
-	myFont->Draw(output, 80, 10);
-
-	/**** Update your scene each frame here ****/
-	//if any key is hit
-	if (myEngine->AnyKeyHit())
-	{
-		//handle the players movement
-		ListenforPlayerInput(myEngine, Player);
-	}
-	Player->MoveDude(tiles); //move the player in their direction
-
-							//-------------------both of the following loops are inneficient because we are checking everything every frame
-
-							//loop the number of active points, and run player to point collision //------------------------by making a class that contains a vector of points could help 
-	for (int i = 0; i < activePointCount; i++)
-	{
-		Points[i]->PlayerCollisionDetection(Player);
-	}
-
-	//loop the number of powerups, and run the player collision //------------------------
-	for (int i = 0; i < activePowerUpCount; i++)
-	{
-		if (!PowerUps[i]->mEaten && PowerUps[i]->PlayerCollisionDetection(Player))
-		{
-			PowerUps[i]->PowerUpEffect(Player);
-			PowerUp_ACTIVE = true;
-		}
-	}
-
-	//timer to deactivate powerup
-	if (PowerUp_ACTIVE)
-	{
-		float timer = myEngine->Timer();
-		float fps = 1 / timer;
-		frameCount++;
-
-		if (frameCount > (fps * 10))
-		{
-			frameCount = 0;
-			PowerUp_ACTIVE = false;
-			Player->mVulnverable = true;
-			Player->mModel->SetSkin("yellow.png");
-			Player->mSpeedMultiplier = 1;
-			Player->SetSpeed(Player->mSpeedMultiplier);
-		}
-	}
-
-}
-
-// Shutdown the game, remove everything created in the setup function
-void GameShutdown()
-{
-	// resetting count data
-	activePointCount = 0;
-	activePowerUpCount = 0;
-
-	// deleting meshs, etc
-	myEngine->RemoveFont(myFont);
-	myEngine->RemoveCamera(myCamera);
-	myEngine->RemoveMesh(tileMESH);
-	myEngine->RemoveMesh(cubeMESH);
-
-	// deleting all stack allocated objects
-	for (int i = 0; i < activePowerUpCount; ++i)
-		delete PowerUps[i];
-
-	for (int i = 0; i < activePointCount; ++i)
-		delete Points[i];
-
-	delete Player;
-	delete AI;
-
-	StopSoundTrackInGame();
-}
+void GameShutdown();
+void GameUpdate(float updateTime);
+bool GameSetup();
+void FrontEndShutdown();
+void FrontEndUpdate(float updateTime);
+bool FrontEndSetup();
+void ProgramShutdown();
+bool ProgramSetup();
 
 void main()
 {
@@ -353,7 +122,7 @@ void main()
 			FrontEndUpdate(frameTime);
 
 			// Program exit required (user pressed Q, closed window or pressed Alt-F4)
-			if (myEngine->KeyHit(Key_Q) || !myEngine->IsRunning() || myEngine->KeyHit(Key_Escape) || GetCurrentSelection() == 1 && myEngine->KeyHit(Key_Return))
+			if (!myEngine->IsRunning() || GetCurrentSelection() == 1 && myEngine->KeyHit(Key_Return))
 			{
 				ProgramShutdown();
 				return;
@@ -364,9 +133,7 @@ void main()
 
 		// Shutdown the front end
 		FrontEndShutdown();
-
 		PlaySoundTrackInGame();
-
 
 		///////////////////////////////////
 		// Loading screen
@@ -504,4 +271,253 @@ void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoi
 			}
 		}
 	}
+}
+
+/////////////////////////////
+// Program setup/shutdown
+
+// One off setup for the entire program. Returns true on success, false on failure
+bool ProgramSetup()
+{
+	// Create a 3D engine (Irrlicht in this case) and open a window for it
+	myEngine = New3DEngine(kTLX);
+	if (!myEngine)
+	{
+		return false;
+	}
+	myEngine->StartWindowed(1280, 720);
+	hWnd = (HWND)myEngine->GetWindow(); // Window handle
+
+										// Add folders for meshes and other media (for different locations)	
+	myEngine->AddMediaFolder(".\\jpg Files");
+	myEngine->AddMediaFolder(".\\png Files");
+	myEngine->AddMediaFolder(".\\tga Files");
+	myEngine->AddMediaFolder(".\\X Files");
+
+	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
+	loadingFont = myEngine->LoadFont("Font2.bmp");
+	if (!loadingFont)
+	{
+		myEngine->Delete();
+		return false;
+	}
+
+	return true;
+}
+
+// Final shutdown for the entire program
+void ProgramShutdown()
+{
+	myEngine->Delete();
+}
+
+// Set up the front-end (load meshes & fonts and create models, cameras, lights etc)
+// Returns true on success, false on failure
+bool FrontEndSetup()
+{
+	frontEndFont = myEngine->LoadFont("Font1.bmp");
+	backgroundMesh = myEngine->LoadMesh("Skybox.x");
+
+	// Load resources, returning on failure
+	if (!frontEndFont || !backgroundMesh) // change to object
+	{
+		// Should really release those that were successfully loaded
+		return false;
+	}
+
+	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
+
+	// Initialise timer (used for variable timing in front-end and game loops)
+	myEngine->Timer();
+
+	cameraMenu = myEngine->CreateCamera(kManual, 0.0f, 70.0f, 0.0f);
+	cameraMenu->RotateX(-55.0f);
+
+	LoadMiniSound();
+
+	LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
+
+	PlaySoundTrackMenu();
+
+	return true;
+}
+
+void FrontEndUpdate(float updateTime)
+{
+	// Text (with shadows)
+	//i.e frontEndFont->Draw("Generic Space Game II", 640, 120, kWhite, kCentre);
+
+
+	frontEndFont->Draw("Play", 200, 118, kGrey, kCentre);
+	frontEndFont->Draw("Play", 200, 122, kGrey, kCentre);
+	frontEndFont->Draw("Play", 202, 118, kGrey, kCentre);
+	frontEndFont->Draw("Play", 202, 122, kGrey, kCentre);
+	frontEndFont->Draw("Play", 200, 120, kWhite, kCentre);
+
+	frontEndFont->Draw("Quit", 200, 218, kGrey, kCentre);
+	frontEndFont->Draw("Quit", 200, 222, kGrey, kCentre);
+	frontEndFont->Draw("Quit", 204, 218, kGrey, kCentre);
+	frontEndFont->Draw("Quit", 204, 222, kGrey, kCentre);
+	frontEndFont->Draw("Quit", 202, 220, kWhite, kCentre);
+
+	if (myEngine->KeyHit(Key_Up))
+	{
+		MoveSelectionUp();
+	}
+
+	if (myEngine->KeyHit(Key_Down))
+	{
+		MoveSelectionDown();
+	}
+
+	// High lights selected option in menu
+	if (GetCurrentSelection() == 0)
+	{
+		frontEndFont->Draw("Play", 200, 120, kRed, kCentre);
+	}
+	else
+	{
+		frontEndFont->Draw("Quit", 202, 220, kRed, kCentre);
+	}
+
+#ifdef _MINI_GAME
+	if (myEngine->KeyHit(Key_Space))
+		PlayMiniSound();
+
+	if (myEngine->KeyHit(Key_Plus))
+		IncrementPitch();
+
+	if (myEngine->KeyHit(Key_Minus))
+		DecrementPitch();
+#endif
+}
+
+// Shutdown the front-end, remove everything created in the setup function
+void FrontEndShutdown()
+{
+	StopSoundTrackMenu();
+	myEngine->RemoveFont(frontEndFont);
+	myEngine->RemoveCamera(cameraMenu);
+	myEngine->RemoveMesh(backgroundMesh);
+}
+
+bool GameSetup()
+{
+	// Initialise timer (used for variable timing in front-end and game loops)
+	myEngine->Timer();
+
+	myCamera = myEngine->CreateCamera(kManual);
+	myCamera->SetPosition(10.0f, 25.0f, 4.0f);
+	myCamera->RotateX(90);
+
+	myFont = myEngine->LoadFont("font1.bmp");
+	tileMESH = myEngine->LoadMesh("Square.x");
+	cubeMESH = myEngine->LoadMesh("state.x");
+
+	cHandler = new CCollisionHandler(); // delete
+	Player = new CPacDude(cubeMESH);	// delete
+	AI = new CGhostDude(cubeMESH, 0);	// delete
+
+	myCamera->AttachToParent(Player->mModel);
+
+	InitialiseTiles_XandZ(tiles, tileMESH, cubeMESH);
+
+	CoordinateFile.open("eMap.txt");
+
+	ReadGrid(CoordinateFile, tiles);
+
+	CoordinateFile.close();
+
+	InitialiseTiles_TerrainAndTexture(tiles, Points, activePointCount, PowerUps, activePowerUpCount, cubeMESH);
+
+	return true;
+}
+
+// Update the game, move models & cameras, draw text etc. Pass a float to specify the
+// time passed since the last update (frame) - allows us to use the variable timing method
+void GameUpdate(float updateTime)
+{
+	//save the player's last position
+	Player->PreviousPos.x = round(Player->mModel->GetX());
+	Player->PreviousPos.z = round(Player->mModel->GetZ());
+
+	string output;
+	myFont->Draw("Speed: ", 10, 10);
+	output = to_string(Player->mSpeed);
+	myFont->Draw(output, 80, 10);
+
+	/**** Update your scene each frame here ****/
+	//if any key is hit
+	if (myEngine->AnyKeyHit())
+	{
+		//handle the players movement
+		ListenforPlayerInput(myEngine, Player);
+	}
+	Player->MoveDude(tiles); //move the player in their direction
+
+							 //-------------------both of the following loops are inneficient because we are checking everything every frame
+
+							 //loop the number of active points, and run player to point collision //------------------------by making a class that contains a vector of points could help 
+	for (int i = 0; i < activePointCount; i++)
+	{
+		Points[i]->PlayerCollisionDetection(Player);
+	}
+
+	//loop the number of powerups, and run the player collision //------------------------
+	for (int i = 0; i < activePowerUpCount; i++)
+	{
+		if (!PowerUps[i]->mEaten && PowerUps[i]->PlayerCollisionDetection(Player))
+		{
+			PowerUps[i]->PowerUpEffect(Player);
+			PowerUp_ACTIVE = true;
+		}
+	}
+
+	if (cHandler->S2SPlayerAI(Player, AI));
+	// handle collision
+
+	//timer to deactivate powerup
+	if (PowerUp_ACTIVE)
+	{
+		float timer = myEngine->Timer();
+		float fps = 1 / timer;
+		frameCount++;
+
+		if (frameCount > (fps * 10))
+		{
+			frameCount = 0;
+			PowerUp_ACTIVE = false;
+			Player->mVulnverable = true;
+			Player->mModel->SetSkin("yellow.png");
+			Player->mSpeedMultiplier = 1;
+			Player->SetSpeed(Player->mSpeedMultiplier);
+		}
+	}
+
+}
+
+// Shutdown the game, remove everything created in the setup function
+void GameShutdown()
+{
+	// resetting count data
+	activePointCount = 0;
+	activePowerUpCount = 0;
+
+	// deleting meshs, etc
+	myEngine->RemoveFont(myFont);
+	myEngine->RemoveCamera(myCamera);
+	myEngine->RemoveMesh(tileMESH);
+	myEngine->RemoveMesh(cubeMESH);
+
+	// deleting all stack allocated objects
+	for (int i = 0; i < activePowerUpCount; ++i)
+		delete PowerUps[i];
+
+	for (int i = 0; i < activePointCount; ++i)
+		delete Points[i];
+
+	delete Player;
+	delete AI;
+
+	StopSoundTrackInGame();
 }

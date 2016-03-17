@@ -60,6 +60,9 @@
     <ClInclude Include="include\MenuSelection.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\CollisionHandler.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ProfSkillsRefactor.cpp">
