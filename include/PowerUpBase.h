@@ -47,10 +47,11 @@ bool CPowerUpBase::PlayerCollisionDetection(CPacDude* Player)
 
 	float collisionDist = sqrt(x*x + z*z);
 
+	// obsolete
 	if (collisionDist < playerRadius + dotRadius)
 	{
 		//collision occoured
-		mModel->SetSkin("black.png");
+		mModel->SetPosition(0, 200, 0);
 		mEaten = true;
 		return true;
 	}

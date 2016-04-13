@@ -455,31 +455,30 @@ void GameUpdate(float updateTime)
 	}
 	Player->MoveDude(tiles); //move the player in their direction
 
-							 //-------------------both of the following loops are inneficient because we are checking everything every frame
+	//-------------------both of the following loops are inneficient because we are checking everything every frame
 
-							 //loop the number of active points, and run player to point collision //------------------------by making a class that contains a vector of points could help 
-	//for (int i = 0; i < activePointCount; i++)
-	//{
-	//	Points[i]->PlayerCollisionDetection(Player);
-	//}
+	//loop the number of active points, and run player to point collision //------------------------by making a class that contains a vector of points could help 
 
-	//loop the number of powerups, and run the player collision //------------------------
-	for (int i = 0; i < activePowerUpCount; i++)
+
+	// if ai, point, power up within player radius - do collision c
+
+	if (cHandler->S2SPlayerAI(Player, AI));
+
+	for (int i = 0; i < activePointCount; ++i)
 	{
-		if (!PowerUps[i]->mEaten && PowerUps[i]->PlayerCollisionDetection(Player))
+		if (cHandler->S2SPlayerPoints(Player, Points[i]));
+		// collision code handle in function
+	}
+
+	for (int i = 0; i < activePowerUpCount; ++i)
+	{
+		if (!PowerUps[i]->mEaten && cHandler->S2SPlayerPowerUp(Player, PowerUps[i]))
+		// collision code handle in function
 		{
 			PowerUps[i]->PowerUpEffect(Player);
 			PowerUp_ACTIVE = true;
 		}
 	}
-
-	if (cHandler->S2SPlayerAI(Player, AI));
-
-	for (int i = 0; i < activePowerUpCount; i++)
-		if (cHandler->S2SPlayerPoints(Player, &Points[i]))
-			cout << "hitPoint\n";
-
-		// handle collision
 
 	//timer to deactivate powerup
 	if (PowerUp_ACTIVE)

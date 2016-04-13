@@ -80,7 +80,7 @@ void LoadSoundFile(const std::string &fileName)
 	}
 
 	 //Set the properties of the source. Details of all available properties are in the SFML documentation of the Sound class
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 2; ++i)
 	{
 		music[i].setVolume(40.0f); // 0 to 100	
 		music[i].setLoop(true);

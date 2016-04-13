@@ -32,6 +32,7 @@ CPoints::CPoints(IMesh* cubeMESH, SCoords p)
 	mEaten = false;
 }
 
+// obsolete
 bool CPoints::PlayerCollisionDetection(CPacDude* Player)
 {
 	//sphere to sphere collision detection
@@ -48,7 +49,7 @@ bool CPoints::PlayerCollisionDetection(CPacDude* Player)
 	if (collisionDist < playerRadius + dotRadius)
 	{		
 		//collision occoured
-		mModel->SetSkin("black.png");
+		mModel->SetPosition(0, 200, 0);
 		return true;
 	}
 	else
