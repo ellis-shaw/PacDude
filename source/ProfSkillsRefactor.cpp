@@ -69,15 +69,19 @@ CPowerUpBase* PowerUps[gNumPowerUps];
 int activePowerUpCount = 0;
 bool PowerUp_ACTIVE = false;
 int frameCount = 0;
+float counter = 0.0f;
 
 //set up the grid of tiles
 CTile tiles[gGridWidth][gGridWidth];
 ifstream CoordinateFile;
 
+int random();
+
 void LoadMap();
 void ReadGrid(ifstream &mapFile, CTile tiles[gGridWidth][gGridWidth]);
 void InitialiseTiles_XandZ(CTile tiles[gGridWidth][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH);
 void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH);
+void AnimatePowerUps(CPowerUpBase* PowerUps[gNumPowerUps], int activePowerUpCount);
 
 void GameShutdown();
 void GameUpdate(float updateTime);
@@ -110,7 +114,7 @@ void main()
 			return;
 		}
 
-		// The front-end loop, repeat until user presses 'P' to play
+		// The front-end loop, repeat until user presses 'Return' to play
 		while (!myEngine->KeyHit(Key_Return))
 		{
 			// Draw the scene
@@ -248,19 +252,21 @@ void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoi
 				break;
 			case Wood:
 				tiles[z][x].model->SetSkin("white.PNG");
-				if (activePowerUpCount % 3 == 0)
+				//random distribution of 
+				if (activePowerUpCount < gNumPowerUps)
 				{
-					PowerUps[activePowerUpCount] = new CPowerUp(cubeMESH, tiles[z][x].coords);
+					if (random() % 2 == 0)
+					{
+						//positive powerup
+						PowerUps[activePowerUpCount] = new CPowerUp(cubeMESH, tiles[z][x].coords);
+					}
+					else
+					{
+						//negative powerup
+						PowerUps[activePowerUpCount] = new CPowerUp2(cubeMESH, tiles[z][x].coords);
+					}
+					activePowerUpCount++;
 				}
-				else if (activePowerUpCount % 2 == 0)
-				{
-					PowerUps[activePowerUpCount] = new CPowerUp2(cubeMESH, tiles[z][x].coords);
-				}
-				else
-				{
-					PowerUps[activePowerUpCount] = new CPowerUp3(cubeMESH, tiles[z][x].coords);
-				}
-				activePowerUpCount++;
 				break;
 			case Water:
 				tiles[z][x].model->SetSkin("blue.PNG");
@@ -454,6 +460,7 @@ void GameUpdate(float updateTime)
 		ListenforPlayerInput(myEngine, Player);
 	}
 	Player->MoveDude(tiles); //move the player in their direction
+	AnimatePowerUps(PowerUps, activePowerUpCount);
 
 	//-------------------both of the following loops are inneficient because we are checking everything every frame
 
@@ -480,22 +487,27 @@ void GameUpdate(float updateTime)
 		}
 	}
 
+	// endif
+
 	//timer to deactivate powerup
 	if (PowerUp_ACTIVE)
 	{
 		float timer = myEngine->Timer();
-		float fps = 1 / timer;
-		frameCount++;
 
-		if (frameCount > (fps * 10))
+		// old timing didn't work - replaced with timer
+		//float fps = 1 / timer;
+		//frameCount++;
+
+		if (counter > 0.5f)
 		{
-			frameCount = 0;
 			PowerUp_ACTIVE = false;
+			counter = 0.0f;
 			Player->mVulnverable = true;
 			Player->mModel->SetSkin("yellow.png");
 			Player->mSpeedMultiplier = 1;
 			Player->SetSpeed(Player->mSpeedMultiplier);
 		}
+		counter += timer;
 	}
 
 }
@@ -524,4 +536,19 @@ void GameShutdown()
 	delete AI;
 
 	StopSoundTrackInGame();
+}
+
+void AnimatePowerUps(CPowerUpBase* PowerUps[gNumPowerUps], int activePowerUpCount)
+{
+	for (int i = 0; i < activePowerUpCount; i++)
+	{
+		PowerUps[i]->mModel->RotateX(0.5f);
+		PowerUps[i]->mModel->RotateY(0.5f);
+		PowerUps[i]->mModel->RotateZ(0.5f);
+	}
+}
+
+int random()
+{
+	return static_cast<int>(static_cast<double> (rand()) / (RAND_MAX + 1) * 6.0f + 1);
 }
