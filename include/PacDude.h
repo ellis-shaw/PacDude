@@ -28,6 +28,7 @@ CPacDude::CPacDude(IMesh* cubeMESH)
 	mPoints = 0;
 	mVulnverable = true;
 	mDefaultSpeed = 0.02f;
+	mSpeed = 0.0f;
 }
 
 void CPacDude::MoveDude(CTile tiles[gGridWidth][gGridWidth])

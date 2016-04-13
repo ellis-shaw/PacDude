@@ -7,9 +7,12 @@
     <Filter Include="headers">
       <UniqueIdentifier>{912d9849-6c48-4e53-aa48-d3b311070c4b}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="source\ProfSkillsRefactor.cpp" />
+    <Filter Include="src">
+      <UniqueIdentifier>{eb013f5d-0b8f-43f8-a0ac-efcfe0693627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio">
+      <UniqueIdentifier>{890b4acc-fda4-4865-9409-b20b1a6856fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Coords.h">
@@ -51,5 +54,39 @@
     <ClInclude Include="include\Tiles.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="include\AudioEffects.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MenuSelection.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CollisionHandler.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\ProfSkillsRefactor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AudioEffects.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MenuSelection.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="AudioFiles\gameBackground.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\gameBackgroundInGame.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\synthOneShot.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\VEH2 Closed Hihats - 005.wav">
+      <Filter>audio</Filter>
+    </Media>
   </ItemGroup>
 </Project>
