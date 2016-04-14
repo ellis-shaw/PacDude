@@ -322,7 +322,7 @@ void ProgramShutdown()
 bool FrontEndSetup()
 {
 	frontEndFont = myEngine->LoadFont("Font1.bmp");
-	backgroundMesh = myEngine->LoadMesh("Skybox.x");
+	backgroundMesh = myEngine->LoadMesh("Stars.x");
 
 	// Load resources, returning on failure
 	if (!frontEndFont || !backgroundMesh) // change to object
@@ -419,7 +419,7 @@ bool GameSetup()
 	myFont = myEngine->LoadFont("font1.bmp");
 	tileMESH = myEngine->LoadMesh("Square.x");
 	cubeMESH = myEngine->LoadMesh("state.x");
-	backgroundMesh = myEngine->LoadMesh("Skybox.x");
+	backgroundMesh = myEngine->LoadMesh("Stars.x");
 	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
 
 	cHandler = new CCollisionHandler(); // delete
@@ -450,13 +450,13 @@ void GameUpdate(float updateTime)
 	Player->PreviousPos.z = round(Player->mModel->GetZ());
 
 	string output;
-	myFont->Draw("Speed: ", 1010, 210);
+	myFont->Draw("Speed: ", 1010, 210, kWhite);
 	output = to_string(Player->mSpeed);
-	myFont->Draw(output, 1080, 210);
+	myFont->Draw(output, 1080, 210, kWhite);
 
-	myFont->Draw("Points: ", 1010, 225);
+	myFont->Draw("Points: ", 1010, 225, kWhite);
 	output = to_string(Player->mPoints);
-	myFont->Draw(output, 1080, 225);
+	myFont->Draw(output, 1080, 225, kWhite);
 
 	/**** Update your scene each frame here ****/
 	//if any key is hit
