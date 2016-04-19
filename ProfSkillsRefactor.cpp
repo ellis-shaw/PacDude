@@ -308,6 +308,26 @@ bool ProgramSetup()
 		return false;
 	}
 
+	myFont = myEngine->LoadFont("font1.bmp");
+	tileMESH = myEngine->LoadMesh("Square.x");
+	cubeMESH = myEngine->LoadMesh("state.x");
+	backgroundMesh = myEngine->LoadMesh("Stars.x");
+	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
+
+	cHandler = new CCollisionHandler(); // delete
+	Player = new CPacDude(cubeMESH);	// delete
+	AI = new CGhostDude(cubeMESH, 0);	// delete
+
+	InitialiseTiles_XandZ(tiles, tileMESH, cubeMESH);
+
+	CoordinateFile.open("eMapV2.0.txt");
+
+	ReadGrid(CoordinateFile, tiles);
+
+	CoordinateFile.close();
+
+	InitialiseTiles_TerrainAndTexture(tiles, Points, activePointCount, PowerUps, activePowerUpCount, cubeMESH);
+
 	return true;
 }
 
@@ -344,6 +364,8 @@ bool FrontEndSetup()
 	LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
 
 	PlaySoundTrackMenu();
+
+	
 
 	return true;
 }
@@ -416,27 +438,11 @@ bool GameSetup()
 	myCamera->SetPosition(10.0f, 25.0f, 4.0f);
 	myCamera->RotateX(90);
 
-	myFont = myEngine->LoadFont("font1.bmp");
-	tileMESH = myEngine->LoadMesh("Square.x");
-	cubeMESH = myEngine->LoadMesh("state.x");
-	backgroundMesh = myEngine->LoadMesh("Stars.x");
-	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
-
-	cHandler = new CCollisionHandler(); // delete
-	Player = new CPacDude(cubeMESH);	// delete
-	AI = new CGhostDude(cubeMESH, 0);	// delete
+	
 
 	myCamera->AttachToParent(Player->mModel);
 
-	InitialiseTiles_XandZ(tiles, tileMESH, cubeMESH);
-
-	CoordinateFile.open("eMapV2.0.txt");
-
-	ReadGrid(CoordinateFile, tiles);
-
-	CoordinateFile.close();
-
-	InitialiseTiles_TerrainAndTexture(tiles, Points, activePointCount, PowerUps, activePowerUpCount, cubeMESH);
+	
 
 	return true;
 }
