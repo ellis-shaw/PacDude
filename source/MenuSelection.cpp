@@ -1,5 +1,5 @@
 #include "MenuSelection.h"
-#include "AudioEffects.h"
+#include "CAudio.h"
 
 /*
 ERROR OCCURS IF YOU HAVE MORE THAN TWO SELECTIONS

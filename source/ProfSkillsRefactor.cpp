@@ -18,7 +18,8 @@
 #include "KeyboardListeners.h"
 
 #include "MenuSelection.h"
-#include "AudioEffects.h"
+#include "CAudio.h"
+#include "CAudioEffects.h"
 #include "CollisionHandler.h"
 
 #include <iostream>
@@ -31,7 +32,7 @@ I3DEngine* myEngine;
 HWND hWnd;
 
 // audio handler
-CAudio* AUDTEST = nullptr;
+BAudio* AUDTEST = nullptr;
 
 // collision handler
 CCollisionHandler* cHandler;
@@ -303,7 +304,7 @@ bool ProgramSetup()
 	myEngine->AddMediaFolder(".\\tga Files");
 	myEngine->AddMediaFolder(".\\X Files");
 
-	AUDTEST = new CAudio(".\\AudioFiles\\synthOneShot.wav");
+	AUDTEST = new CAudioEffects(".\\AudioFiles\\synthOneShot.wav");
 
 	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
 	loadingFont = myEngine->LoadFont("Font2.bmp");

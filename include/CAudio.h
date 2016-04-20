@@ -1,5 +1,5 @@
-#ifndef _AUDIO_EFFECTS
-#define _AUDIO_EFFECTS
+#ifndef _AUDIO
+#define _AUDIO
 
 #define _MINI_GAME
 
@@ -12,7 +12,7 @@
 
 //--------------------------------------------------------------------------------------
 //
-//	AudioEffects.h
+//	BAudio.h
 //
 //	Handles audio effects/ music
 //  
@@ -21,42 +21,30 @@
 //
 //--------------------------------------------------------------------------------------
 
-class CAudio
+class BAudio
 {
 /////////////////////////////
 // Public member functions
 public:
 	// Constructor - used to load up a single sound file
 	// will check if the file exists
-	CAudio(const std::string &soundFile);
+	BAudio();
 
 	// Destructor - empty
-	~CAudio();
+	virtual ~BAudio() {};
 
 	// play sound file
-	void Play();
+	virtual void Play() = 0;
 
 	// stop sound file
-	void Stop();
+	virtual void Stop() = 0;
 
 	// pause depending if playing
-	void PauseUnPauseFile();
+	virtual void PauseUnPauseFile() = 0;
 
 /////////////////////////////
 // Private data members
-private:
-	bool paused;
-
-	// SFML variables
-	sf::SoundBuffer buffer;
-	sf::Sound sound;
-	sf::Music music;
-	sf::Vector3f soundPos;
-	sf::Vector3f soundVelocity;
-	sf::Vector3f listenerPos;
-	sf::Vector3f listenerForward;
-	sf::Vector3f listenerUp;
-
+protected:
 	// Check if file is real
 	bool FileExists(const std::string &soundFile);
 };
