@@ -54,13 +54,19 @@
     <ClInclude Include="include\Tiles.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="include\AudioEffects.h">
-      <Filter>headers</Filter>
-    </ClInclude>
     <ClInclude Include="include\MenuSelection.h">
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="include\CollisionHandler.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CAudio.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CAudioEffects.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CMusic.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,10 +74,16 @@
     <ClCompile Include="source\ProfSkillsRefactor.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="source\AudioEffects.cpp">
+    <ClCompile Include="source\MenuSelection.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="source\MenuSelection.cpp">
+    <ClCompile Include="source\CAudio.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CAudioEffects.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CMusic.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

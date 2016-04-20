@@ -1,18 +1,10 @@
 #include "MenuSelection.h"
-#include "AudioEffects.h"
-
-/*
-ERROR OCCURS IF YOU HAVE MORE THAN TWO SELECTIONS
-TO REPLICATE THE BEHAVIOUR FOR MORE OPTIONS IMPLEMENT
-A COUNTER I.E. DOWN DECREMENTS, UNTIL IT REACHES LIMIT AND RESETS
-SAME BEHAVIOUR IN THE OPPOSITE DIRECTION FOR UP
-*/
 
 Selection selection = Play;			// initial start position for menu
 static const int menuAmount = 1;	// amount of menu options -1.
 int counter = 0;					// keeps track of selection value
 
-void MoveSelectionUp()
+void MoveSelectionUp(BAudio* soundObject)
 {
 	if (counter > 0)
 	{
@@ -24,11 +16,12 @@ void MoveSelectionUp()
 
 		// hide away the audio calls, so that you cant create sound even
 		// when not moving in menu UI
-		PlaySoundFile();
+		if(soundObject != nullptr)
+			soundObject->Play();
 	}
 }
 
-void MoveSelectionDown()
+void MoveSelectionDown(BAudio* soundObject)
 {
 	if (counter < menuAmount)
 	{
@@ -40,7 +33,8 @@ void MoveSelectionDown()
 
 		// hide away the audio calls, so that you cant create sound even
 		// when not moving in menu UI
-		PlaySoundFile();
+		if (soundObject != nullptr)
+			soundObject->Play();
 	}
 }
 
