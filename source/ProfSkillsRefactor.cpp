@@ -473,14 +473,16 @@ void GameUpdate(float updateTime)
 
 	for (int i = 0; i < activePointCount; ++i)
 	{
-		if (cHandler->S2SPlayerPoints(Player, Points[i]));
-		// collision code handle in function
+		if (!Points[i]->mEaten && cHandler->S2SPlayerPoints(Player, Points[i]))
+		{
+			Points[i]->mEaten = true;
+			Player->mPoints++;
+		}
 	}
 
 	for (int i = 0; i < activePowerUpCount; ++i)
 	{
 		if (!PowerUps[i]->mEaten && cHandler->S2SPlayerPowerUp(Player, PowerUps[i]))
-		// collision code handle in function
 		{
 			PowerUps[i]->PowerUpEffect(Player);
 			PowerUp_ACTIVE = true;
