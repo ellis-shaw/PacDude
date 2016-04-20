@@ -1,8 +1,6 @@
 #ifndef _AUDIO
 #define _AUDIO
 
-#define _MINI_GAME
-
 #include <string>
 #include <iostream>
 #include <conio.h>
@@ -42,22 +40,31 @@ public:
 	// pause depending if playing
 	virtual void PauseUnPauseFile() = 0;
 
+	// increase volume
+	virtual void IncreaseVolume(const int &amount) = 0;
+
+	// decrease volume
+	virtual void DecreaseVolume(const int &amount) = 0;
+
+	// increase pitch
+	virtual void IncreasePitch() = 0;
+
+	// decrease pitch
+	virtual void DecreasePitch() = 0;
+
+	// increase pitch
+	virtual void IncreasePitch(const int &amount) = 0;
+
+	// decrease pitch
+	virtual void DecreasePitch(const int &amount) = 0;
+
 /////////////////////////////
 // Private data members
 protected:
 	// Check if file is real
 	bool FileExists(const std::string &soundFile);
+
+	float ChangeSemitone(float frequency, float variation);
 };
-
-// silly audio game thing. use space bar and the + and -
-
-#ifdef _MINI_GAME
-
-void LoadMiniSound();
-void PlayMiniSound();
-void IncrementPitch();
-void DecrementPitch();
-float ChangeSemitone(float frequency, float variation);
-#endif
 
 #endif

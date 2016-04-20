@@ -20,6 +20,7 @@
 #include "MenuSelection.h"
 #include "CAudio.h"
 #include "CAudioEffects.h"
+#include "CMusic.h"
 #include "CollisionHandler.h"
 
 #include <iostream>
@@ -28,48 +29,53 @@ using namespace std;
 using namespace tle;
 
 // Variables
-I3DEngine* myEngine;
-HWND hWnd;
+I3DEngine* myEngine = nullptr;
+HWND hWnd			= nullptr;
 
-// audio handler
-BAudio* AUDTEST = nullptr;
+// audio handlers
+BAudio* pickupSound	= nullptr;
+BAudio* menuClick	= nullptr;
+
+BAudio* menuMusic	= nullptr;
+BAudio* gameMusic	= nullptr;
 
 // collision handler
-CCollisionHandler* cHandler;
+CCollisionHandler* cHandler = nullptr;
 
-IFont* loadingFont;
-IFont* frontEndFont;
-IFont* gameFont;
-IFont* myFont;
+IFont* loadingFont	= nullptr;
+IFont* frontEndFont = nullptr;
+IFont* gameFont		= nullptr;
+IFont* myFont		= nullptr;
 
-IModel* backgroundModel;
-IMesh* backgroundMesh;
+IModel* backgroundModel = nullptr;
+IMesh* backgroundMesh	= nullptr;
 
-IModel* floorModel;
-IMesh* floorMesh;
+IModel* floorModel	= nullptr;
+IMesh* floorMesh	= nullptr;
 
-IMesh* tileMESH;
-IMesh* cubeMESH;
+IMesh* tileMESH		= nullptr;
+IMesh* cubeMESH		= nullptr;
 
-ICamera* cameraMenu;
-ICamera* myCamera;
+ICamera* cameraMenu = nullptr;
+ICamera* myCamera	= nullptr;
 
 //Set up Player
-CPacDude* Player;
+CPacDude* Player	= nullptr;
 
 //Set up AI
+
+CGhostDude* AI = nullptr;
 const int numGhosts = 2;
-CGhostDude* AI;
 
 const int gNumPoints = 10000;
 const int gNumPowerUps = 10;
 
 //set up points
-CPoints* Points[gNumPoints];
+CPoints* Points[gNumPoints] = { nullptr };
 int activePointCount = 0;
 
 //set up powerups
-CPowerUpBase* PowerUps[gNumPowerUps];
+CPowerUpBase* PowerUps[gNumPowerUps] = { nullptr };
 int activePowerUpCount = 0;
 bool PowerUp_ACTIVE = false;
 int frameCount = 0;
@@ -137,11 +143,11 @@ void main()
 			}
 		}
 
-		//PauseUnPauseSoundTrackMenu();
+		menuMusic->PauseUnPauseFile();
 
 		// Shutdown the front end
 		FrontEndShutdown();
-		//PlaySoundTrackInGame();
+		gameMusic->Play();
 
 		///////////////////////////////////
 		// Loading screen
@@ -296,15 +302,21 @@ bool ProgramSetup()
 		return false;
 	}
 	myEngine->StartWindowed(1280, 720);
-	hWnd = (HWND)myEngine->GetWindow(); // Window handle
 
-										// Add folders for meshes and other media (for different locations)	
+	// Window handle
+	hWnd = (HWND)myEngine->GetWindow();
+
+	// Add folders for meshes and other media (for different locations)	
 	myEngine->AddMediaFolder(".\\jpg Files");
 	myEngine->AddMediaFolder(".\\png Files");
 	myEngine->AddMediaFolder(".\\tga Files");
 	myEngine->AddMediaFolder(".\\X Files");
 
-	AUDTEST = new CAudioEffects(".\\AudioFiles\\synthOneShot.wav");
+	pickupSound = new CAudioEffects(".\\AudioFiles\\synthOneShot.wav");
+	menuClick = new CAudioEffects(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
+
+	menuMusic = new CMusic(".\\AudioFiles\\gameBackground.wav");
+	gameMusic = new CMusic(".\\AudioFiles\\gameBackgroundInGame.wav");
 
 	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
 	loadingFont = myEngine->LoadFont("Font2.bmp");
@@ -320,6 +332,10 @@ bool ProgramSetup()
 // Final shutdown for the entire program
 void ProgramShutdown()
 {
+	delete menuMusic;
+	delete gameMusic;
+	delete pickupSound;
+
 	myEngine->Delete();
 }
 
@@ -345,11 +361,13 @@ bool FrontEndSetup()
 	cameraMenu = myEngine->CreateCamera(kManual, 0.0f, 70.0f, 0.0f);
 	cameraMenu->RotateX(-55.0f);
 
-	//LoadMiniSound();
+	menuMusic->Play();
 
-	//LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
+	menuClick->DecreaseVolume(80);
 
-	//PlaySoundTrackMenu();
+	menuClick->IncreasePitch(4);
+
+
 
 	return true;
 }
@@ -374,12 +392,12 @@ void FrontEndUpdate(float updateTime)
 
 	if (myEngine->KeyHit(Key_Up))
 	{
-		MoveSelectionUp();
+		MoveSelectionUp(menuClick);
 	}
 
 	if (myEngine->KeyHit(Key_Down))
 	{
-		MoveSelectionDown();
+		MoveSelectionDown(menuClick);
 	}
 
 	// High lights selected option in menu
@@ -391,23 +409,12 @@ void FrontEndUpdate(float updateTime)
 	{
 		frontEndFont->Draw("Quit", 202, 220, kRed, kCentre);
 	}
-
-//#ifdef _MINI_GAME
-//	if (myEngine->KeyHit(Key_Space))
-//		PlayMiniSound();
-//
-//	if (myEngine->KeyHit(Key_Plus))
-//		IncrementPitch();
-//
-//	if (myEngine->KeyHit(Key_Minus))
-//		DecrementPitch();
-//#endif
 }
 
 // Shutdown the front-end, remove everything created in the setup function
 void FrontEndShutdown()
 {
-	//StopSoundTrackMenu();
+	menuMusic->Stop();
 	myEngine->RemoveFont(frontEndFont);
 	myEngine->RemoveCamera(cameraMenu);
 	myEngine->RemoveMesh(backgroundMesh);
@@ -426,9 +433,9 @@ bool GameSetup()
 	tileMESH = myEngine->LoadMesh("Square.x");
 	cubeMESH = myEngine->LoadMesh("state.x");
 
-	cHandler = new CCollisionHandler(); // delete
-	Player = new CPacDude(cubeMESH);	// delete
-	AI = new CGhostDude(cubeMESH, 0);	// delete
+	cHandler = new CCollisionHandler(); 
+	Player = new CPacDude(cubeMESH);	
+	AI = new CGhostDude(cubeMESH, 0);	
 
 	myCamera->AttachToParent(Player->mModel);
 
@@ -484,7 +491,7 @@ void GameUpdate(float updateTime)
 			Points[i]->mEaten = true;
 			Player->mPoints++;
 
-			AUDTEST->Play();
+			pickupSound->Play();
 		}
 	}
 
@@ -525,6 +532,8 @@ void GameUpdate(float updateTime)
 // Shutdown the game, remove everything created in the setup function
 void GameShutdown()
 {
+	gameMusic->Stop();
+
 	// resetting count data
 	activePointCount = 0;
 	activePowerUpCount = 0;
@@ -544,8 +553,6 @@ void GameShutdown()
 
 	delete Player;
 	delete AI;
-
-	//StopSoundTrackInGame();
 }
 
 void AnimatePowerUps(CPowerUpBase* PowerUps[gNumPowerUps], int activePowerUpCount)

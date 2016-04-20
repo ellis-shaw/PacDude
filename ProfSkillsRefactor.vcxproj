@@ -127,15 +127,16 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Music.cpp" />
     <ClCompile Include="source\CAudio.cpp" />
     <ClCompile Include="source\CAudioEffects.cpp" />
+    <ClCompile Include="source\CMusic.cpp" />
     <ClCompile Include="source\MenuSelection.cpp" />
     <ClCompile Include="source\ProfSkillsRefactor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CAudio.h" />
     <ClInclude Include="include\CAudioEffects.h" />
+    <ClInclude Include="include\CMusic.h" />
     <ClInclude Include="include\CollisionHandler.h" />
     <ClInclude Include="include\Coords.h" />
     <ClInclude Include="include\Entity.h" />
@@ -151,7 +152,6 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
     <ClInclude Include="include\PowerUp3.h" />
     <ClInclude Include="include\PowerUpBase.h" />
     <ClInclude Include="include\Tiles.h" />
-    <ClInclude Include="Music.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="AudioFiles\gameBackground.wav" />
