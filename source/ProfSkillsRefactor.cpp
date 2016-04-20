@@ -30,6 +30,9 @@ using namespace tle;
 I3DEngine* myEngine;
 HWND hWnd;
 
+// audio handler
+CAudio* AUDTEST = nullptr;
+
 // collision handler
 CCollisionHandler* cHandler;
 
@@ -133,11 +136,11 @@ void main()
 			}
 		}
 
-		PauseUnPauseSoundTrackMenu();
+		//PauseUnPauseSoundTrackMenu();
 
 		// Shutdown the front end
 		FrontEndShutdown();
-		PlaySoundTrackInGame();
+		//PlaySoundTrackInGame();
 
 		///////////////////////////////////
 		// Loading screen
@@ -300,6 +303,8 @@ bool ProgramSetup()
 	myEngine->AddMediaFolder(".\\tga Files");
 	myEngine->AddMediaFolder(".\\X Files");
 
+	AUDTEST = new CAudio(".\\AudioFiles\\synthOneShot.wav");
+
 	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
 	loadingFont = myEngine->LoadFont("Font2.bmp");
 	if (!loadingFont)
@@ -339,11 +344,11 @@ bool FrontEndSetup()
 	cameraMenu = myEngine->CreateCamera(kManual, 0.0f, 70.0f, 0.0f);
 	cameraMenu->RotateX(-55.0f);
 
-	LoadMiniSound();
+	//LoadMiniSound();
 
-	LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
+	//LoadSoundFile(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
 
-	PlaySoundTrackMenu();
+	//PlaySoundTrackMenu();
 
 	return true;
 }
@@ -386,22 +391,22 @@ void FrontEndUpdate(float updateTime)
 		frontEndFont->Draw("Quit", 202, 220, kRed, kCentre);
 	}
 
-#ifdef _MINI_GAME
-	if (myEngine->KeyHit(Key_Space))
-		PlayMiniSound();
-
-	if (myEngine->KeyHit(Key_Plus))
-		IncrementPitch();
-
-	if (myEngine->KeyHit(Key_Minus))
-		DecrementPitch();
-#endif
+//#ifdef _MINI_GAME
+//	if (myEngine->KeyHit(Key_Space))
+//		PlayMiniSound();
+//
+//	if (myEngine->KeyHit(Key_Plus))
+//		IncrementPitch();
+//
+//	if (myEngine->KeyHit(Key_Minus))
+//		DecrementPitch();
+//#endif
 }
 
 // Shutdown the front-end, remove everything created in the setup function
 void FrontEndShutdown()
 {
-	StopSoundTrackMenu();
+	//StopSoundTrackMenu();
 	myEngine->RemoveFont(frontEndFont);
 	myEngine->RemoveCamera(cameraMenu);
 	myEngine->RemoveMesh(backgroundMesh);
@@ -477,6 +482,8 @@ void GameUpdate(float updateTime)
 		{
 			Points[i]->mEaten = true;
 			Player->mPoints++;
+
+			AUDTEST->Play();
 		}
 	}
 
@@ -537,7 +544,7 @@ void GameShutdown()
 	delete Player;
 	delete AI;
 
-	StopSoundTrackInGame();
+	//StopSoundTrackInGame();
 }
 
 void AnimatePowerUps(CPowerUpBase* PowerUps[gNumPowerUps], int activePowerUpCount)

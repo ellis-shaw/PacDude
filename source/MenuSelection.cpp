@@ -24,7 +24,7 @@ void MoveSelectionUp()
 
 		// hide away the audio calls, so that you cant create sound even
 		// when not moving in menu UI
-		PlaySoundFile();
+		//PlaySoundFile();
 	}
 }
 
@@ -40,7 +40,7 @@ void MoveSelectionDown()
 
 		// hide away the audio calls, so that you cant create sound even
 		// when not moving in menu UI
-		PlaySoundFile();
+		//PlaySoundFile();
 	}
 }
 
