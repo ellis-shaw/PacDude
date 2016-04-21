@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="X Files\sierra.x">
+      <Filter>audio</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="headers">
@@ -100,5 +103,28 @@
     <Media Include="AudioFiles\VEH2 Closed Hihats - 005.wav">
       <Filter>audio</Filter>
     </Media>
+    <Media Include="AudioFiles\Juhani Junkala Ending.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\Juhani Junkala Level 1.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\Juhani Junkala Level 2.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\Juhani Junkala Level 3.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\Juhani Junkala Title Screen.wav">
+      <Filter>audio</Filter>
+    </Media>
+    <Media Include="AudioFiles\laser9.wav">
+      <Filter>audio</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="X Files\sierra.jpg">
+      <Filter>audio</Filter>
+    </Image>
   </ItemGroup>
 </Project>

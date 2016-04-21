@@ -27,7 +27,7 @@ CPoints::CPoints()
 CPoints::CPoints(IMesh* cubeMESH, SCoords p)
 {
 	mCoords = p;
-	mModel = cubeMESH->CreateModel(p.x, 0.0f, p.z);
+	mModel = cubeMESH->CreateModel(p.x, 0.2f, p.z);
 	mModel->Scale(0.5f);
 	mEaten = false;
 }

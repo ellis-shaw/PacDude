@@ -1,33 +1,34 @@
-﻿Build started 17/03/2016 16:33:57.
-     1>Project "C:\Users\Lmayor1\Source\Repos\PacDude2\ProfSkillsRefactor.vcxproj" on node 2 (Build target(s)).
+﻿Build started 21/04/2016 15:50:03.
+     1>Project "C:\Users\jeshaw3\Source\Repos\PacDude\ProfSkillsRefactor.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\ProgramData\TL-Engine\include" /IC:\Users\Lmayor1\Source\Repos\PacDude2\\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt source\ProfSkillsRefactor.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I"C:\ProgramData\TL-Engine\include" /IC:\Users\jeshaw3\Source\Repos\PacDude\\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /Gy /fp:fast /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt source\ProfSkillsRefactor.cpp
          ProfSkillsRefactor.cpp
-     1>c:\users\lmayor1\source\repos\pacdude2\include\pacdude.h(48): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\pacdude.h(58): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\pacdude.h(68): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\pacdude.h(78): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\points.h(30): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\powerupbase.h(31): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\powerup.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\powerup2.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\include\powerup3.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\source\profskillsrefactor.cpp(227): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\source\profskillsrefactor.cpp(443): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\source\profskillsrefactor.cpp(444): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-     1>c:\users\lmayor1\source\repos\pacdude2\source\profskillsrefactor.cpp(478): warning C4390: ';': empty controlled statement found; is this the intent?
+     1>c:\users\jeshaw3\source\repos\pacdude\include\pacdude.h(49): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\pacdude.h(59): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\pacdude.h(69): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\pacdude.h(79): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\points.h(30): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\powerupbase.h(31): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\powerup.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\powerup2.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\include\powerup3.h(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\source\profskillsrefactor.cpp(240): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\source\profskillsrefactor.cpp(486): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jeshaw3\source\repos\pacdude\source\profskillsrefactor.cpp(487): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Lmayor1\Source\Repos\PacDude2\ProfSkillsRefactorDebug.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\Lmayor1\Source\Repos\PacDude2\\lib /LIBPATH:"C:\ProgramData\TL-Engine\lib" "TL-Engine2015Debug.lib" "sfml-window-d.lib" "sfml-audio-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /Debug /PDB:"C:\Users\Lmayor1\Source\Repos\PacDude2\\ProfSkillsRefactor.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /IMPLIB:"C:\Users\Lmayor1\Source\Repos\PacDude2\\ProfSkillsRefactorDebug.lib" /MACHINE:X86 /SAFESEH:NO Debug\AudioEffects.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jeshaw3\Source\Repos\PacDude\ProfSkillsRefactorDebug.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Users\jeshaw3\Source\Repos\PacDude\\lib /LIBPATH:"C:\ProgramData\TL-Engine\lib" "TL-Engine2015Debug.lib" "sfml-window-d.lib" "sfml-audio-d.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /Debug /PDB:"C:\Users\jeshaw3\Source\Repos\PacDude\\ProfSkillsRefactor.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /IMPLIB:"C:\Users\jeshaw3\Source\Repos\PacDude\\ProfSkillsRefactorDebug.lib" /MACHINE:X86 /SAFESEH:NO Debug\CAudio.obj
+         Debug\CAudioEffects.obj
+         Debug\CMusic.obj
          Debug\MenuSelection.obj
          Debug\ProfSkillsRefactor.obj
-         ProfSkillsRefactor.vcxproj -> C:\Users\Lmayor1\Source\Repos\PacDude2\\ProfSkillsRefactorDebug.exe
+         ProfSkillsRefactor.vcxproj -> C:\Users\jeshaw3\Source\Repos\PacDude\\ProfSkillsRefactorDebug.exe
        PostBuildEvent:
-         copy "C:\ProgramData\TL-Engine\3rd Party\Irrlicht-0.7\bin\VisualStudio\IrrlichtDebug.dll" "C:\Users\Lmayor1\Source\Repos\PacDude2\\" > NUL
-         copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "C:\Users\Lmayor1\Source\Repos\PacDude2\\" > NUL
+         copy "C:\ProgramData\TL-Engine\3rd Party\Irrlicht-0.7\bin\VisualStudio\IrrlichtDebug.dll" "C:\Users\jeshaw3\Source\Repos\PacDude\\" > NUL
+         copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "C:\Users\jeshaw3\Source\Repos\PacDude\\" > NUL
          
          :VCEnd
-     1>Done Building Project "C:\Users\Lmayor1\Source\Repos\PacDude2\ProfSkillsRefactor.vcxproj" (Build target(s)).
+     1>Done Building Project "C:\Users\jeshaw3\Source\Repos\PacDude\ProfSkillsRefactor.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.12
+Time Elapsed 00:00:01.22

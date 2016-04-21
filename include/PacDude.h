@@ -15,23 +15,24 @@ public:
 
 	void SnapX();//snapping isnt the cleanest
 	void SnapZ();
-	void MoveDude(CTile tiles[gGridWidth][gGridWidth]);
+	void MoveDude(CTile tiles[gGridHeight][gGridWidth]);
 
 	CPacDude();
 	CPacDude(IMesh*);
 };
 
-CPacDude::CPacDude(IMesh* cubeMESH)
+CPacDude::CPacDude(IMesh* playerMESH)
 {
-	mModel = cubeMESH->CreateModel(5.0f, 0.0f, 5.0f);
+	mModel = playerMESH->CreateModel(5.0f, 0.0f, 5.0f);
+	mModel->Scale(0.7);
 	mModel->SetSkin("yellow.png");
 	mPoints = 0;
 	mVulnverable = true;
-	mDefaultSpeed = 0.02f;
+	mDefaultSpeed = 0.04f;
 	mSpeed = 0.0f;
 }
 
-void CPacDude::MoveDude(CTile tiles[gGridWidth][gGridWidth])
+void CPacDude::MoveDude(CTile tiles[gGridHeight][gGridWidth])
 {
 	//move the player in their direction
 	switch (mDirection)

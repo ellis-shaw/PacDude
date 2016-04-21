@@ -125,6 +125,7 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="X Files\sierra.x" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\CAudio.cpp" />
@@ -156,8 +157,17 @@ copy "C:\ProgramData\TL-Engine\3rd Party\TL-Xtreme\shader\*.*" "$(OutDir)" &gt; 
   <ItemGroup>
     <Media Include="AudioFiles\gameBackground.wav" />
     <Media Include="AudioFiles\gameBackgroundInGame.wav" />
+    <Media Include="AudioFiles\Juhani Junkala Ending.wav" />
+    <Media Include="AudioFiles\Juhani Junkala Level 1.wav" />
+    <Media Include="AudioFiles\Juhani Junkala Level 2.wav" />
+    <Media Include="AudioFiles\Juhani Junkala Level 3.wav" />
+    <Media Include="AudioFiles\Juhani Junkala Title Screen.wav" />
+    <Media Include="AudioFiles\laser9.wav" />
     <Media Include="AudioFiles\synthOneShot.wav" />
     <Media Include="AudioFiles\VEH2 Closed Hihats - 005.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="X Files\sierra.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

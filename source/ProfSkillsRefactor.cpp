@@ -55,6 +55,7 @@ IMesh* floorMesh	= nullptr;
 
 IMesh* tileMESH		= nullptr;
 IMesh* cubeMESH		= nullptr;
+IMesh* playerMESH   = nullptr;
 
 ICamera* cameraMenu = nullptr;
 ICamera* myCamera	= nullptr;
@@ -82,15 +83,15 @@ int frameCount = 0;
 float counter = 0.0f;
 
 //set up the grid of tiles
-CTile tiles[gGridWidth][gGridWidth];
+CTile tiles[gGridHeight][gGridWidth];
 ifstream CoordinateFile;
 
 int random();
 
 void LoadMap();
-void ReadGrid(ifstream &mapFile, CTile tiles[gGridWidth][gGridWidth]);
-void InitialiseTiles_XandZ(CTile tiles[gGridWidth][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH);
-void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH);
+void ReadGrid(ifstream &mapFile, CTile tiles[gGridHeight][gGridWidth]);
+void InitialiseTiles_XandZ(CTile tiles[gGridHeight][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH);
+void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridHeight][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH);
 void AnimatePowerUps(CPowerUpBase* PowerUps[gNumPowerUps], int activePowerUpCount);
 
 void GameShutdown();
@@ -192,14 +193,14 @@ void main()
 
 }
 
-void ReadGrid(ifstream &mapFile, CTile tiles[gGridWidth][gGridWidth])
+void ReadGrid(ifstream &mapFile, CTile tiles[gGridHeight][gGridWidth])
 {
 	char ch; //temp holder for data being read in
 
 	if (mapFile.is_open())
 	{
 		//read in Z inversely (from 9 -> 0)
-		for (int z = gGridWidth - 1; z >= 0; z--)
+		for (int z = gGridHeight - 1; z >= 0; z--)
 		{
 			for (int x = 0; x < gGridWidth; x++)
 			{
@@ -227,10 +228,10 @@ void ReadGrid(ifstream &mapFile, CTile tiles[gGridWidth][gGridWidth])
 }
 
 //Constructor style for grid //cannot be in constructor because the constructor gives them all the same value 
-void InitialiseTiles_XandZ(CTile tiles[gGridWidth][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH)
+void InitialiseTiles_XandZ(CTile tiles[gGridHeight][gGridWidth], IMesh* tileMESH, IMesh* cubeMESH)
 {
 	//this method initilaises the tiles matrix (models, state models, coordinates and states)
-	for (int z = 0; z < gGridWidth; z++)
+	for (int z = 0; z < gGridHeight; z++)
 	{
 		for (int x = 0; x < gGridWidth; x++)
 		{
@@ -242,10 +243,10 @@ void InitialiseTiles_XandZ(CTile tiles[gGridWidth][gGridWidth], IMesh* tileMESH,
 }
 
 //Method sets the tile's textures to match the terrain
-void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH)
+void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridHeight][gGridWidth], CPoints* Points[gNumPoints], int& activePointCount, CPowerUpBase* PowerUps[gNumPowerUps], int& activePowerUpCount, IMesh* cubeMESH)
 {
 	//loop the tiles matrix
-	for (int z = 0; z < gGridWidth; z++)
+	for (int z = 0; z < gGridHeight; z++)
 	{
 		for (int x = 0; x < gGridWidth; x++)
 		{
@@ -253,27 +254,46 @@ void InitialiseTiles_TerrainAndTexture(CTile tiles[gGridWidth][gGridWidth], CPoi
 			switch (tiles[z][x].terrain)
 			{
 			case Wall:
-				tiles[z][x].model->SetSkin("black.PNG");
+				tiles[z][x].model->SetSkin("white.PNG");
+				tiles[z][x].model->SetY(50);
 				break;
 			case Open:
-				tiles[z][x].model->SetSkin("white.PNG");
+				tiles[z][x].model->SetSkin("grey.PNG");
 				Points[activePointCount] = new CPoints(cubeMESH, tiles[z][x].coords);
 				activePointCount++;
 				break;
 			case Wood:
-				tiles[z][x].model->SetSkin("white.PNG");
+				tiles[z][x].model->SetSkin("grey.PNG");
 				//random distribution of 
 				if (activePowerUpCount < gNumPowerUps)
 				{
-					if (random() % 2 == 0)
+					if (random() == 1)
 					{
 						//positive powerup
 						PowerUps[activePowerUpCount] = new CPowerUp(cubeMESH, tiles[z][x].coords);
 					}
-					else
+					else if (random() == 2)
 					{
 						//negative powerup
 						PowerUps[activePowerUpCount] = new CPowerUp2(cubeMESH, tiles[z][x].coords);
+					}
+					else if (random() == 3)
+					{
+						//invincibility
+						PowerUps[activePowerUpCount] = new CPowerUp3(cubeMESH, tiles[z][x].coords);
+					}
+					/*	else if (random() == 4)
+					{
+					}
+					else if (random() == 5)
+					{
+					}
+					else if (random() == 6)
+					{
+					}*/
+					else
+					{
+						PowerUps[activePowerUpCount] = new CPowerUp(cubeMESH, tiles[z][x].coords);
 					}
 					activePowerUpCount++;
 				}
@@ -315,8 +335,8 @@ bool ProgramSetup()
 	pickupSound = new CAudioEffects(".\\AudioFiles\\synthOneShot.wav");
 	menuClick = new CAudioEffects(".\\AudioFiles\\VEH2 Closed Hihats - 005.wav");
 
-	menuMusic = new CMusic(".\\AudioFiles\\gameBackground.wav");
-	gameMusic = new CMusic(".\\AudioFiles\\gameBackgroundInGame.wav");
+	menuMusic = new CMusic(".\\AudioFiles\\Juhani Junkala Title Screen.wav");
+	gameMusic = new CMusic(".\\AudioFiles\\Juhani Junkala Level 2.wav");
 
 	// Load a loading screen font - will keep this in memory all the time (i.e. don't remove it)
 	loadingFont = myEngine->LoadFont("Font2.bmp");
@@ -343,8 +363,8 @@ void ProgramShutdown()
 // Returns true on success, false on failure
 bool FrontEndSetup()
 {
-	frontEndFont = myEngine->LoadFont("Font1.bmp");
-	backgroundMesh = myEngine->LoadMesh("Skybox.x");
+	frontEndFont = myEngine->LoadFont("Font1.bmp", 60);
+	backgroundMesh = myEngine->LoadMesh("Stars.x");
 
 	// Load resources, returning on failure
 	if (!frontEndFont || !backgroundMesh) // change to object
@@ -354,6 +374,7 @@ bool FrontEndSetup()
 	}
 
 	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
+	backgroundModel->RotateX(90);
 
 	// Initialise timer (used for variable timing in front-end and game loops)
 	myEngine->Timer();
@@ -426,22 +447,27 @@ bool GameSetup()
 	myEngine->Timer();
 
 	myCamera = myEngine->CreateCamera(kManual);
-	myCamera->SetPosition(10.0f, 25.0f, 4.0f);
-	myCamera->RotateX(90);
 
-	myFont = myEngine->LoadFont("font1.bmp");
+	myFont = myEngine->LoadFont("Font1.bmp");
 	tileMESH = myEngine->LoadMesh("Square.x");
 	cubeMESH = myEngine->LoadMesh("state.x");
+	playerMESH = myEngine->LoadMesh("sierra.x");
+	backgroundMesh = myEngine->LoadMesh("Stars.x");
+	backgroundModel = backgroundMesh->CreateModel(0.0f, 0.0f, 0.0f);
+	backgroundModel->RotateX(90);
 
 	cHandler = new CCollisionHandler(); 
-	Player = new CPacDude(cubeMESH);	
+	Player = new CPacDude(playerMESH);
 	AI = new CGhostDude(cubeMESH, 0);	
 
 	myCamera->AttachToParent(Player->mModel);
+	myCamera->MoveLocalY(10);
+	myCamera->MoveLocalZ(10);
+	myCamera->RotateLocalX(30);
 
 	InitialiseTiles_XandZ(tiles, tileMESH, cubeMESH);
 
-	CoordinateFile.open("eMap.txt");
+	CoordinateFile.open("eMapV2.0.txt");
 
 	ReadGrid(CoordinateFile, tiles);
 
@@ -461,9 +487,13 @@ void GameUpdate(float updateTime)
 	Player->PreviousPos.z = round(Player->mModel->GetZ());
 
 	string output;
-	myFont->Draw("Speed: ", 10, 10);
+	myFont->Draw("Speed: ", 1010, 210, kWhite);
 	output = to_string(Player->mSpeed);
-	myFont->Draw(output, 80, 10);
+	myFont->Draw(output, 1080, 210, kWhite);
+
+	myFont->Draw("Points: ", 1010, 225, kWhite);
+	output = to_string(Player->mPoints);
+	myFont->Draw(output, 1080, 225, kWhite);
 
 	/**** Update your scene each frame here ****/
 	//if any key is hit
@@ -482,7 +512,18 @@ void GameUpdate(float updateTime)
 
 	// if ai, point, power up within player radius - do collision c
 
-	if (cHandler->S2SPlayerAI(Player, AI));
+	//AI to Player Collision detection
+	if (AI->AIcollisionWithPlayer(Player))
+	{
+		if (Player->mVulnverable) //if the player is in normal mode
+		{
+			//kill player
+		}
+		else //if the player is in "invulnerable" mode
+		{
+			//kill AI
+		}
+	}
 
 	for (int i = 0; i < activePointCount; ++i)
 	{

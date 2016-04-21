@@ -25,8 +25,8 @@ CPowerUp3::CPowerUp3()
 CPowerUp3::CPowerUp3(IMesh* cubeMESH, SCoords p)
 {
 	mCoords = p;
-	mModel = cubeMESH->CreateModel(p.x, 0.0f, p.z);
-	mModel->Scale(0.5f);
+	mModel = cubeMESH->CreateModel(p.x, 0.3f, p.z);
+	mModel->Scale(0.6f);
 	mModel->SetSkin("orange.png");
 	mEaten = false;
 }
